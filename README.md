@@ -6,7 +6,7 @@ Read some encrypted data in zk, decrypt, modify, and re-encrypt as output. Trust
 
 Consider a chacha stream of length `2**64` bytes = 17383583047 GB. This represents a quantum storage space. Commiting two different values to the same location in the encryption space compromises the private key, breaking encryption.
 
-ZK programs can trustlessly read and write bytes in the encryption space.
+ZK programs can trustlessly read and write and operate on bytes in the encryption space.
 
 Assume an encryption space is structured like so:
 - final 4 bytes: buffer size
@@ -47,6 +47,8 @@ committing to hashes creates two pieces of information to be managed: the hash a
 If we commit via encryption we can use a stream cipher to selectively decrypt and mutate regions of the committed data. Arbitrary memory structures can be designed based on access needs.
 
 The structure is inherently copy-on-write because re-using a nonce compromises the private key. It might be considered a quantum storage device, committing to a value means not committing to another value without revealing the private key.
+
+EDIT: i now think this is incorrect. The structure that probably makes sense is zk arg with digest of encrypted data arguing execution of a program over data in a region of the encryption space defined by `H(bytes in region)`.
 
 ## merkle trees in an encryption space
 
