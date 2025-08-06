@@ -8,17 +8,17 @@ Consider a chacha stream of length `2**64` bytes = 17383583047 GB. This represen
 
 ZK programs can trustlessly read and write bytes in the encryption space.
 
-A step system first comes to mind for storing indexed versions of a finite buffer of bytes.
-
-The encryption space is encoded like so:
+Assume an encryption space is structured like so:
 - final 4 bytes: buffer size
 - byte offset % buffer size: buffer at version
 
 **ZK proofs can be used to enforce and exploit structure in an encryption space**
 
-Buffers are committed at the specified index, forming a key-value map. Values are accessible in `O(1)` by seeking to a point in the encryption stream.
+(see [the init ZKProgram](crates/heteromorphic_zk/src/bin/init.rs), which initializes a sequantially written encryption space; see the concrete example below for more)
 
-An example application might use zk to mutate buffers at predetermined indices based on logic involving buffers at other indices.
+Buffers are committed at offset (index * buffer size), forming a key-value map. Values are accessible in `O(1)` by seeking to a point in the encryption stream.
+
+An example application might use zk to mutate buffers at predetermined indices based on logic involving input from users.
 
 Storing and indexing data is trivial because it's a byte stream (though random access complicates this slightly). Contrast this to the complexity of maintaining/operating merkle trees.
 
