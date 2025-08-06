@@ -6,13 +6,13 @@ Read some encrypted data in zk, decrypt, modify, and re-encrypt as output. Trust
 
 Consider a chacha stream of length `2**64` bytes = 17383583047 GB. This represents a quantum storage space. Commiting two different values to the same location in the encryption space compromises the private key, breaking encryption.
 
-ZK programs can trustlessly operate on the bytes in the encryption space.
+ZK programs can trustlessly read and write bytes in the encryption space.
 
 A step system first comes to mind for storing indexed versions of a finite buffer of bytes.
 
 The encryption space is encoded like so:
 - final 4 bytes: buffer size
-- offset % buffer size: buffer at version
+- byte offset % buffer size: buffer at version
 
 **ZK proofs can be used to enforce and exploit structure in an encryption space**
 
