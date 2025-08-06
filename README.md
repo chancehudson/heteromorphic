@@ -2,12 +2,27 @@
 
 Read some encrypted data in zk, decrypt, modify, and re-encrypt as output. Trustless mutation of encrypted state.
 
-## byte storage in an encryption stream
+## byte storage in an encryption space
 
-Consider a chacha stream of length `2**64` bytes = 17383583047 GB. Each byte is lazily committed in the transcript (set of mutations that occur in zk). e.g. **encrypted output proven to be encrypted with a certain key is a commitment to a region in a data stream for said key.** This can be used for version control of data with `O(1)` access to any historically known point.
+Consider a chacha stream of length `2**64` bytes = 17383583047 GB. This represents a quantum storage space. Commiting two different values to the same location in the encryption space compromises the private key, breaking encryption.
 
-This is comparable to a merkle tree, without the complexity of a tree structure. Checksumming the stream is more difficult, though with zk proofs we can make maintain a hashchain version in the memory space (as a sort of kernel/driver).
+ZK programs can trustlessly operate on the bytes in the encryption space.
 
+A step system first comes to mind for storing indexed versions of a finite buffer of bytes.
+
+The encryption space is encoded like so:
+- final 4 bytes: buffer size
+- offset % buffer size: buffer at version
+
+**ZK proofs can be used to enforce and exploit structure in an encryption space**
+
+Buffers are committed at the specified index, forming a key-value map. Values are accessible in `O(1)` by seeking to a point in the encryption stream.
+
+An example application might use zk to mutate buffers at predetermined indices based on logic involving buffers at other indices.
+
+Storing and indexing data is trivial because it's a byte stream (though random access complicates this slightly). Contrast this to the complexity of maintaining/operating merkle trees.
+
+### concrete example: sequential write system
 We configure the stream:
 - `mem_len`: byte length of the memory available for reading and writing
 
@@ -17,7 +32,7 @@ NIT: memory is the wrong term, it's more like storage. The next step is sharding
 
 ## practical implications
 
-We arrive conceptually at **encryption spaces as block storage devices**.
+We arrive conceptually at **encryption spaces as block storage devices**. We can then run ZK programs in the encryption space.
 
 In ecdsa a `[u8; 32]` represents a keypair. In chacha a `[u8; 32]` represents a **quantum storage space**. Writing two different pieces of data to the same location in the encryption space compromises the private key. Encryption spaces have a _finite_ amount of usable storage for a given private key.
 
@@ -33,4 +48,6 @@ If we commit via encryption we can use a stream cipher to selectively decrypt an
 
 The structure is inherently copy-on-write because re-using a nonce compromises the private key. It might be considered a quantum storage device, committing to a value means not committing to another value without revealing the private key.
 
+## merkle trees in an encryption space
 
+it may be possible to embed a merkle tree in a kv structure in an encryption space. Using some sort of pointer indirection for memory slots.
