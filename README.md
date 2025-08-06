@@ -24,3 +24,13 @@ In ecdsa a `[u8; 32]` represents a keypair. In chacha a `[u8; 32]` represents a 
 Hosting the storage means storing the full encryption transcript, and the _latest_ zk proof. So storage size is constant and trustless to the data being stored (1).
 
 1: achieving trustless random reads will require an embedded hashchain system
+
+## why use encrypted data and not hashes? hashes are constant size after all
+
+committing to hashes creates two pieces of information to be managed: the hash and the data. As a result the hash must be checked against the data and complexity is introduced.
+
+If we commit via encryption we can use a stream cipher to selectively decrypt and mutate regions of the committed data. Arbitrary memory structures can be designed based on access needs.
+
+The structure is inherently copy-on-write because re-using a nonce compromises the private key. It might be considered a quantum storage device, committing to a value means not committing to another value without revealing the private key.
+
+
