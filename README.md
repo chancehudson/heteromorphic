@@ -19,7 +19,7 @@ NIT: memory is the wrong term, it's more like storage. The next step is sharding
 
 We arrive conceptually at **encryption spaces as block storage devices**.
 
-In ecdsa a `[u8; 32]` represents a keypair. In chacha a `[u8; 32]` represents a storage space, provided it can be mutated in zk.
+In ecdsa a `[u8; 32]` represents a keypair. In chacha a `[u8; 32]` represents a **quantum storage space**. Writing two different pieces of data to the same location in the encryption space compromises the private key.
 
 Hosting the storage means storing the full encryption transcript, and the _latest_ zk proof. So storage size is constant and trustless to the data being stored (1).
 
