@@ -1,0 +1,23 @@
+[package]
+name = "heteromorphic_zk"
+version = "0.0.1"
+edition = "2024"
+description = "ZK programs for heteromorphic crate"
+
+[lib]
+
+[features]
+default = ["zkpo", "sp1-sdk"]
+
+[dependencies]
+zkpo = { workspace = true, optional = true }
+sp1-sdk = { version = "4", optional = true }
+
+bincode = "1"
+sp1-zkvm = "4"
+chacha = "0.4.0"
+
+[build-dependencies]
+zkpo = { workspace = true }
+anyhow = { workspace = true }
+

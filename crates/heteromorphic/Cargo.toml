@@ -1,0 +1,14 @@
+[package]
+name = "heteromorphic"
+version = "0.0.1"
+edition = "2024"
+description = "Argue execution of zk programs on encrypted data"
+
+[lib]
+
+[dependencies]
+zkpo = { workspace = true }
+anyhow = { workspace = true }
+bincode = { workspace = true }
+
+heteromorphic_zk = { path = "../heteromorphic_zk" }

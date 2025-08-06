@@ -1,0 +1,10 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+
+[workspace.dependencies]
+#zkpo = { version = "0", features = ["sp1"] }
+zkpo = { path = "../zkpo", features = ["sp1"] }
+anyhow = "1"
+bincode = "1"
+
