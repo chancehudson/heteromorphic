@@ -1,5 +1,5 @@
-// #![no_main]
-// sp1_zkvm::entrypoint!(main);
+#![no_main]
+sp1_zkvm::entrypoint!(main);
 
 // Initialize a heteromorphic blob of data.
 // Assert that some encrypted data is all
@@ -18,11 +18,11 @@ pub fn main() {
     // encryption stream. During operation the last state
     // should be at `mem_pointer - byte_len`, with the next
     // state at `mem_pointer`
-    let (key, mem_len, nonce): ([u8; 32], u32, [u8; 12]) =
+    let (key, mem_len): ([u8; 32], u32) =
         bincode::deserialize(&input).expect("failed to deserialize input key");
 
     // put some state at the beginning of the thing
-    let mut chacha = ChaCha::new_ietf(&key, &nonce);
+    let mut chacha = ChaCha::new_ietf(&key, &[0u8; 12]);
 
     // first 4 bytes contain length of the data
     // total region length = len_bytes (4) + mem_len
